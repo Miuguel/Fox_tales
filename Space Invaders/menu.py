@@ -24,14 +24,14 @@ class Menu:
         self.planeta = Animation(path.joinpath('planetacinza.png'), 50)
         self.planeta.set_sequence_time(0, 24, 200, True)
 
-        # iniciar a estrela da primeira tela
+        #iniciar a estrela da primeira tela
         self.estrela = Animation(path.joinpath('estrela.png'), 50)
         self.estrela.set_sequence_time(0, 24, 200, True)
 
         #iniciar o titulo
         self.spaceinv_logo = Animation(path.joinpath('space invaders.png'), 1)
 
-        #inicia os botes do menu principal e coloca na respectiva lista 
+        #inicia os botes do menu principal e coloca na respectiva lista
         jogar = Botao(path.joinpath('play.png'), total_frames=2, pos=[43, 135], funcao='jogar')
         dificuldade = Botao(path.joinpath('difficulty.png'), total_frames=2, pos=[43, 271], funcao='dificuldade')
         ranking = Botao(path.joinpath('Ranking.png'), total_frames=2, pos=[43, 412], funcao='ranking')
@@ -39,7 +39,7 @@ class Menu:
 
         self.menu_botoes = [jogar, dificuldade, ranking, sair]
 
-        #inicia os botes do menu de dificuldade e coloca na respectiva lista 
+        #inicia os botes do menu de dificuldade e coloca na respectiva lista
         easy = Botao(path.joinpath('Easy.png'), total_frames=3, pos=[516, 98], funcao=0)
         meduim = Botao(path.joinpath('Medium.png'), total_frames=3, pos=[458, 253], funcao=1)
         hard = Botao(path.joinpath('Hard.png'), total_frames=3, pos=[516, 417], funcao=2)
@@ -47,9 +47,11 @@ class Menu:
 
     #Redireciona para a tela certa
     def gerenciador(self, teclado, cursor, janela):
-        """Redireciona para a tela certa"""
-        if self.tela_atual == 'menu' or self.tela_atual == 'ranking':  ##por enquanto o ranking faz a msm coisa
+        '''Redireciona para a tela certa'''
+        if self.tela_atual == 'menu':
             self.tela_principal(cursor)
+        elif self.tela_atual == 'ranking':
+            self.tela_ranking(teclado, janela)
         elif self.tela_atual == 'jogar':
             return self.tela_jogar(teclado, janela)
         elif self.tela_atual == 'dificuldade':
@@ -78,7 +80,28 @@ class Menu:
 
     # vazia por enquanto, mas volta com o esc
     def tela_jogar(self, teclado: keyboard.Keyboard, janela):
-        janela.set_background_color([0, 0, 0])  #mudar dps
+        janela.set_background_color([0, 0, 0])
+        if teclado.key_pressed('esc'):
+            self.tela_atual = 'menu'
+        return 'jogo'
+
+    def tela_ranking(self, teclado: keyboard.Keyboard, janela):
+        janela.set_background_color([0, 0, 0])
+        texto = janela.draw_text("RANKING:", janela.width / 2 - 200, 15, size=100, color=(0, 100, 50),
+                                 font_name="Consola", bold=False, italic=False)
+
+        with open("highscore.txt", 'r') as file:
+            scores = file.readlines()
+
+        scores = [s.strip().split(": ") for s in scores]
+        scores = sorted(scores, key=lambda x: int(x[1]), reverse=True)
+
+        y_pos = 150  # Posicionamento inicial dos rankings
+        for i, (nome, score) in enumerate(scores):
+            janela.draw_text(f'{i + 1}. {nome} - {score}', janela.width / 2 - 100, y_pos, size=20,
+                             color=(255, 255, 255),
+                             font_name="Arial")
+            y_pos += 30
         if teclado.key_pressed('esc'):
             self.tela_atual = 'menu'
         return 'jogo'
@@ -104,8 +127,6 @@ class Botao(Animation):
 
     def clica_ou_nao(self, cursor: mouse, menu: Menu):
 
-        # por enquanto o codigo muda a variavel de que tela está #
-        # #TODO mudar a tela diretamente, para evitar esses if
         if menu.tela_atual == 'menu' or menu.tela_atual == 'ranking':
             if cursor.is_over_object(self):
                 self.set_curr_frame(1)  # se o mouse fica em cima seleciona
@@ -114,8 +135,7 @@ class Botao(Animation):
             else:
                 self.set_curr_frame(0)
 
-        # NOTE uma possivel ideia pode ser ser fazer cada janela definir seu menu antes
-        # e aqui chamar diretamente a janela
+        ## NOTE uma possivel ideia pode ser ser fazer cada janela definir seu menu antes e aqui chamar diretamente a janela
 
         # se tiver na tela de dificuldade os botoes sao diferentes
         elif menu.tela_atual == 'dificuldade':
@@ -140,6 +160,7 @@ def menu_loop(diff=0):
     menu = Menu()
     menu.dificuldade = diff
     teclado = Window.get_keyboard()
+
     while True:
         if menu.gerenciador(teclado, cursor, janela) == 'jogo':
             return menu.dificuldade

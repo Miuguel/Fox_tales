@@ -1,0 +1,9 @@
+MAISA: 0 
+MAISA: 0 
+frgf: 0 
+sdhewsfwe: 0 
+/bin/python3 "/home/sergio/Downloads/SP OFICIAL-20240614T154856Z-001/SP OFICIAL/jogo.py": 0 
+/bin/python3 "/home/sergio/Downloads/SP OFICIAL-20240614T154856Z-001/SP OFICIAL/jogo.py": 0 
+ferfd: 0 
+wefsd: 0 
+/bin/python "/home/aluno/Downloads/SP OFICIAL (3)/jogo.py": 240 
