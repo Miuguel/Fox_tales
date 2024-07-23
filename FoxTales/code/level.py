@@ -14,7 +14,8 @@ from magic import MagicPlayer
 from upgrade import Upgrade
 
 class Level:
-    def __init__(self):
+    def __init__(self, difficulty):
+        self.difficulty = difficulty  # Adiciona a dificuldade
         # Configuração da superfície de exibição
         self.display_surface = pygame.display.get_surface()
         self.game_paused = False
@@ -40,6 +41,16 @@ class Level:
         self.magic_player = MagicPlayer(self.animation_player)
 
     def create_map(self):
+        # Ajuste os parâmetros baseados na dificuldade
+        if self.difficulty == 'easy':
+            # Configurações para dificuldade fácil
+            pass
+        elif self.difficulty == 'medium':
+            # Configurações para dificuldade média
+            pass
+        elif self.difficulty == 'hard':
+            # Configurações para dificuldade difícil
+            pass
         layouts = {
             'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
             'grass': import_csv_layout('../map/map_Grass.csv'),
