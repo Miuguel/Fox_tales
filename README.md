@@ -1,4 +1,3 @@
-```markdown
 # Fox_Tales
 
 **Fox_Tales** é um jogo no estilo **top-down**, inspirado em clássicos como **The Legend of Zelda: A Link to the Past**. Desenvolvido como parte das aulas de **Programação de Jogos**, ministradas pelo professor **Esteban**, este projeto representa uma jornada de aprendizado e criatividade.
